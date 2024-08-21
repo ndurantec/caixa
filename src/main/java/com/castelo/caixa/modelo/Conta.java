@@ -4,6 +4,7 @@ public class Conta {
     private String nome;
     private String descricao;
     
+    @Deprecated
     public Conta() {
     }
 

@@ -9,6 +9,7 @@ public class Fluxo {
     private double valor;
     private String descricao;
     
+    @Deprecated
     public Fluxo() {
     }
 

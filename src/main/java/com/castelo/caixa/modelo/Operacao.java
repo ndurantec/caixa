@@ -3,6 +3,7 @@ package com.castelo.caixa.modelo;
 public class Operacao {
     private String nome;
 
+    @Deprecated
     public Operacao() {
     }
 
