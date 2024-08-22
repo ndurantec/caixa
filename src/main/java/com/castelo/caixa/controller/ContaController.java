@@ -10,25 +10,25 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping(value = "/conta")
-public class ContaController {
+    public class ContaController {
 
     @GetMapping (value = "/conta")
-    public String imprimir(){
+    public String imprimirConta(){
         return "Chegou no servidor1";
     }
    
-    @PostMapping(value = "/inserir")
-        public void inserir() {
+    @PostMapping(value = "/inserirConta")
+        public void inserirConta() {
     
     }
 
-    @PutMapping(value = "/atualizar")
-        public void listar(){
+    @PutMapping(value = "/atualizarConta")
+        public void listarConta(){
 
     }
 
-    @DeleteMapping(value = "/deletar")
-        public void deletar(){
+    @DeleteMapping(value = "/deletarConta")
+        public void deletarConta(){
 
     }
 
