@@ -6,12 +6,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping
-public class ContaController {
-
-    @GetMapping (value = "/conta")
+public class FluxoController {
+     @GetMapping (value = "/fluxo")
     public String imprimir(){
-        return "Chegou no servidor1";
+        return "Chegou no servidor2";
     }
-
 }
-
