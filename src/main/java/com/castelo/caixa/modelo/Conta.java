@@ -1,5 +1,6 @@
 package com.castelo.caixa.modelo;
 
+
 public class Conta {
     private String nome;
     private String descricao;

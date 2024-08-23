@@ -2,7 +2,11 @@ package com.castelo.caixa.modelo;
 
 import java.sql.Date;
 
+
+
+
 public class Fluxo {
+    private Long id;
     private Conta conta;
     private Date data;
     private Operacao operacao;
@@ -13,12 +17,13 @@ public class Fluxo {
     public Fluxo() {
     }
 
-    public Fluxo(Conta conta, Date data, Operacao operacao, double valor, String descricao) {
+    public Fluxo(Conta conta, Date data, Operacao operacao, double valor, String descricao, Long id) {
         this.conta = conta;
         this.data = data;
         this.operacao = operacao;
         this.valor = valor;
         this.descricao = descricao;
+        this.id = id;
     }
 
     public Conta getConta() {
@@ -41,6 +46,8 @@ public class Fluxo {
         return operacao;
     }
 
+    
+
     public void setOperacao(Operacao operacao) {
         this.operacao = operacao;
     }
@@ -61,9 +68,20 @@ public class Fluxo {
         this.descricao = descricao;
     }
 
+    
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    
+
     @Override
     public String toString() {
-        return "Fluxo [conta=" + conta + ", data=" + data + ", operacao=" + operacao + ", valor=" + valor
+        return "Fluxo [id=" + id + ", conta=" + conta + ", data=" + data + ", operacao=" + operacao + ", valor=" + valor
                 + ", descricao=" + descricao + "]";
     }
 
@@ -71,6 +89,7 @@ public class Fluxo {
     public int hashCode() {
         final int prime = 31;
         int result = 1;
+        result = prime * result + ((id == null) ? 0 : id.hashCode());
         result = prime * result + ((conta == null) ? 0 : conta.hashCode());
         result = prime * result + ((data == null) ? 0 : data.hashCode());
         result = prime * result + ((operacao == null) ? 0 : operacao.hashCode());
@@ -90,6 +109,11 @@ public class Fluxo {
         if (getClass() != obj.getClass())
             return false;
         Fluxo other = (Fluxo) obj;
+        if (id == null) {
+            if (other.id != null)
+                return false;
+        } else if (!id.equals(other.id))
+            return false;
         if (conta == null) {
             if (other.conta != null)
                 return false;
@@ -114,6 +138,4 @@ public class Fluxo {
             return false;
         return true;
     }
-
-    
 }

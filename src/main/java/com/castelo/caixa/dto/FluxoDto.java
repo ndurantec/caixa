@@ -5,8 +5,9 @@ import java.sql.Date;
 import com.castelo.caixa.modelo.Conta;
 import com.castelo.caixa.modelo.Operacao;
 
+
 public class FluxoDto {
-    
+    private Long id;
     private Conta conta;
     private Date data;
     private Operacao operacao;
@@ -17,12 +18,21 @@ public class FluxoDto {
     public FluxoDto() {
     }
 
-    public FluxoDto(Conta conta, Date data, Operacao operacao, double valor, String descricao) {
+    public FluxoDto(Long id, Conta conta, Date data, Operacao operacao, double valor, String descricao) {
+        this.id = id;
         this.conta = conta;
         this.data = data;
         this.operacao = operacao;
         this.valor = valor;
         this.descricao = descricao;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public Conta getConta() {
@@ -65,4 +75,5 @@ public class FluxoDto {
         this.descricao = descricao;
     }
 
+    
 }
