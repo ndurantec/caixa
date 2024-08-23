@@ -3,6 +3,7 @@ package com.castelo.caixa;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
+
 @SpringBootApplication
 //@SpringBootApplication(exclude = {DataSourceAutoConfiguration.class})
 public class CaixaApplication {
@@ -12,3 +13,4 @@ public class CaixaApplication {
 	}
 
 }
+	
