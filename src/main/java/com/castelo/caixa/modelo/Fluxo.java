@@ -1,11 +1,22 @@
 package com.castelo.caixa.modelo;
 
+import java.io.Serializable;
 import java.sql.Date;
 
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
 
 
 
-public class Fluxo {
+@Entity
+public class Fluxo implements Serializable{
+
+    private static final long serialVersionUID =1L;
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private Conta conta;
     private Date data;

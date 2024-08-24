@@ -7,3 +7,4 @@ import com.castelo.caixa.modelo.Fluxo;
 public interface FluxoRepository extends JpaRepository<Fluxo, Long>{
     
 }
+

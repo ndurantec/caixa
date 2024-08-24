@@ -13,14 +13,14 @@ import org.springframework.web.bind.annotation.RestController;
 import com.castelo.caixa.repository.FluxoRepository;
 
 @RestController
-@RequestMapping
+@RequestMapping(value = "/fluxo")
 public class FluxoController {
     
     @Autowired
     private FluxoRepository fluxoRepository;
 
-     @GetMapping (value = "/fluxo")
-    public List imprimirFluxo(){
+    @GetMapping (value = "/findAll")
+    public List findAll(){
         return fluxoRepository.findAll();
     }
 
