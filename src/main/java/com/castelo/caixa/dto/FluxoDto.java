@@ -3,6 +3,7 @@ package com.castelo.caixa.dto;
 import java.sql.Date;
 
 import com.castelo.caixa.modelo.Conta;
+import com.castelo.caixa.modelo.Fluxo;
 import com.castelo.caixa.modelo.Operacao;
 
 
@@ -75,5 +76,7 @@ public class FluxoDto {
         this.descricao = descricao;
     }
 
-    
+    public Fluxo novoFluxo(){
+        return new Fluxo(conta, data, operacao, valor, descricao, null);
+    }
 }
