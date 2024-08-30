@@ -19,10 +19,11 @@ import com.castelo.caixa.dto.FluxoDto;
 import com.castelo.caixa.modelo.Fluxo;
 import com.castelo.caixa.repository.FluxoRepository;
 
+
 @RestController
 @RequestMapping(value = "/fluxo")
 public class FluxoController {
-    
+
     @Autowired
     private FluxoRepository fluxoRepository;
 
@@ -32,7 +33,7 @@ public class FluxoController {
     }
 
     @PostMapping(value = "/insert")
-        public ResponseEntity<Fluxo> insert(@RequestBody FluxoDto fluxoDto) {
+        public ResponseEntity<Fluxo> insert(@RequestBody FluxoDto fluxoDto) {        
            Fluxo fluxo = fluxoDto.novoFluxo();
            fluxoRepository.save(fluxo);
 

@@ -6,7 +6,6 @@ import com.castelo.caixa.modelo.Conta;
 import com.castelo.caixa.modelo.Fluxo;
 import com.castelo.caixa.modelo.Operacao;
 
-
 public class FluxoDto {
     private Long id;
     private Conta conta;

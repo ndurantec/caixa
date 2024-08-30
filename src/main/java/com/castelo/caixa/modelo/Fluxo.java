@@ -7,6 +7,8 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 
 
 
@@ -18,8 +20,14 @@ public class Fluxo implements Serializable{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @ManyToOne
+    @JoinColumn(name = "conta_id")
     private Conta conta;
     private Date data;
+
+    @ManyToOne
+    @JoinColumn(name = "operacao_id")
     private Operacao operacao;
     private double valor;
     private String descricao;
