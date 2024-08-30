@@ -1,6 +1,7 @@
  package com.castelo.caixa.controller;
 
 import java.net.URI;
+import java.time.LocalDateTime;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +18,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.castelo.caixa.dto.FluxoDto;
 import com.castelo.caixa.modelo.Fluxo;
+import com.castelo.caixa.modelo.Operacao;
 import com.castelo.caixa.repository.FluxoRepository;
 
 
@@ -66,6 +68,13 @@ public class FluxoController {
         public void deletar(){
 
     }
+
+    public void consultaEntrada(LocalDateTime data, String nome, Operacao origem) {
+        
+    } 
+
+
+
 
 
 }
