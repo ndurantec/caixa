@@ -19,7 +19,9 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import com.castelo.caixa.dto.FluxoDto;
 import com.castelo.caixa.modelo.Fluxo;
 import com.castelo.caixa.modelo.Operacao;
+import com.castelo.caixa.repository.ContaRepository;
 import com.castelo.caixa.repository.FluxoRepository;
+import com.castelo.caixa.repository.OperacaoRepository;
 
 
 @RestController
@@ -28,6 +30,12 @@ public class FluxoController {
 
     @Autowired
     private FluxoRepository fluxoRepository;
+
+    @Autowired
+    private OperacaoRepository operacaoRepository;
+
+    @Autowired
+    private ContaRepository contaRepository;
 
     @GetMapping (value = "/findAll")
     public List findAll(){
@@ -59,14 +67,29 @@ public class FluxoController {
 
     }
     
-    @PutMapping(value = "/atualizar")
-        public void listar(){
-
+    @PutMapping("/{id}")
+    public ResponseEntity<Fluxo> updateFluxo(@PathVariable Long id, @RequestBody Fluxo updatedFluxo) {
+        return fluxoRepository.findById(id)
+                .map(fluxo -> {
+                    fluxo.setConta(contaRepository.findById(updatedFluxo.getConta().getId()).orElse(null));
+                    fluxo.setOperacao(operacaoRepository.findById(updatedFluxo.getOperacao().getId()).orElse(null));
+                    fluxo.setData(updatedFluxo.getData());
+                    fluxo.setValor(updatedFluxo.getValor());
+                    fluxo.setDescricao(updatedFluxo.getDescricao());
+                    fluxoRepository.save(fluxo);
+                    return ResponseEntity.ok(fluxo);
+                })
+                .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
-    @DeleteMapping(value = "/deletar")
-        public void deletar(){
-
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Object> deleteFluxo(@PathVariable Long id) {
+        return fluxoRepository.findById(id)
+                .map(fluxo -> {
+                    fluxoRepository.delete(fluxo);
+                    return ResponseEntity.noContent().build();
+                })
+                .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
     public void consultaEntrada(LocalDateTime data, String nome, Operacao origem) {

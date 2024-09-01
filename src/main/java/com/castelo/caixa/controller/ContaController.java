@@ -1,8 +1,8 @@
 package com.castelo.caixa.controller;
 
 import java.net.URI;
+import java.util.List;
 
-import org.hibernate.mapping.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -27,10 +27,11 @@ public class ContaController {
     @Autowired
     private ContaRepository contaRepository;
 
-    //@GetMapping(value = "/findAll")
-    //public List findAll(){
-    //    return contaRepository.findAll();
-    //}
+
+    @GetMapping (value = "/findAll")
+    public List findAll(){
+        return contaRepository.findAll();
+    }
 
     @PostMapping(value = "/insert")
     public ResponseEntity<Conta> insert(@RequestBody ContaDto contaDto) {
@@ -47,11 +48,32 @@ public class ContaController {
     
 
     @GetMapping(value = "/{id}")
-    public ResponseEntity findById(@PathVariable Long id){
+    public ResponseEntity<Conta> findById(@PathVariable Long id){
         return contaRepository.findById(id)            
             .map(registro ->ResponseEntity.ok().body(registro))            
             .orElse(ResponseEntity.notFound().build()); 
 
     }
 
+    @PutMapping("/{id}")
+    public ResponseEntity<Conta> updateConta(@PathVariable Long id, @RequestBody Conta updatedConta) {
+        return contaRepository.findById(id)
+                .map(conta -> {
+                    conta.setNome(updatedConta.getNome());
+                    conta.setDescricao(updatedConta.getDescricao());
+                    contaRepository.save(conta);
+                    return ResponseEntity.ok(conta);
+                })
+                .orElseGet(() -> ResponseEntity.notFound().build());
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Object> deleteConta(@PathVariable Long id) {
+        return contaRepository.findById(id)
+                .map(conta -> {
+                    contaRepository.delete(conta);
+                    return ResponseEntity.noContent().build();
+                })
+                .orElseGet(() -> ResponseEntity.notFound().build());
+    }
 }
