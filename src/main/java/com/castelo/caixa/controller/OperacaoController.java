@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -20,6 +21,7 @@ import com.castelo.caixa.modelo.Operacao;
 import com.castelo.caixa.repository.OperacaoRepository;
 
 @RestController
+@CrossOrigin(origins = "*")
 @RequestMapping(value = "/operacao")
 public class OperacaoController {
 
@@ -29,7 +31,7 @@ public class OperacaoController {
     @GetMapping (value = "/findAll")
     public List findAll(){
         return operacaoRepository.findAll();
-    }
+    }  
 
     @PostMapping (value = "/insert")
     public ResponseEntity<Operacao> insert(@RequestBody OperacaoDto operacaoDto) {
