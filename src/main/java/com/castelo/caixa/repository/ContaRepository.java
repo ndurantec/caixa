@@ -6,4 +6,6 @@ import com.castelo.caixa.modelo.Conta;
 
 public interface ContaRepository extends JpaRepository<Conta, Long>{
     
+
+
 }
