@@ -3,6 +3,7 @@
 import java.net.URI;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -17,7 +18,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import com.castelo.caixa.dto.ContaDto;
 import com.castelo.caixa.dto.FluxoDto;
+import com.castelo.caixa.modelo.Conta;
 import com.castelo.caixa.modelo.Fluxo;
 import com.castelo.caixa.modelo.Operacao;
 import com.castelo.caixa.repository.ContaRepository;
@@ -68,6 +71,16 @@ public class FluxoController {
                 .orElse(ResponseEntity.notFound().build());
 
     }
+
+        @PostMapping("/findByData")
+    public ResponseEntity<Long> buscarFluxoPorNome(@RequestBody FluxoDto fluxoDto) {
+        Optional<Fluxo> fluxo = fluxoRepository.findByData(fluxoDto.getData());
+        Fluxo fluxoObjeto = fluxo.get();
+        System.out.println(fluxoObjeto.toString());
+        return fluxo.map(c -> ResponseEntity.ok(c.getId()))
+                    .orElse(ResponseEntity.notFound().build());
+    }
+
     
     @PutMapping("/{id}")
     public ResponseEntity<Fluxo> updateFluxo(@PathVariable Long id, @RequestBody Fluxo updatedFluxo) {

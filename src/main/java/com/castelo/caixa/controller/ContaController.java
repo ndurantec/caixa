@@ -2,7 +2,7 @@ package com.castelo.caixa.controller;
 
 import java.net.URI;
 import java.util.List;
-
+import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
@@ -55,6 +55,15 @@ public class ContaController {
             .map(registro ->ResponseEntity.ok().body(registro))            
             .orElse(ResponseEntity.notFound().build()); 
 
+    }
+
+    @PostMapping("/findByNome")
+    public ResponseEntity<Long> buscarContaPorNome(@RequestBody ContaDto contaDto) {
+        Optional<Conta> conta = contaRepository.findByNome(contaDto.getNome());
+        Conta contaObjeto = conta.get();
+        System.out.println(contaObjeto.toString());
+        return conta.map(c -> ResponseEntity.ok(c.getId()))
+                    .orElse(ResponseEntity.notFound().build());
     }
 
     @PutMapping("/{id}")
