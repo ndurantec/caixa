@@ -1,11 +1,14 @@
  package com.castelo.caixa.controller;
 
 import java.net.URI;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -15,6 +18,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
@@ -72,13 +76,16 @@ public class FluxoController {
 
     }
 
-        @PostMapping("/findByData")
-    public ResponseEntity<Long> buscarFluxoPorNome(@RequestBody FluxoDto fluxoDto) {
-        Optional<Fluxo> fluxo = fluxoRepository.findByData(fluxoDto.getData());
-        Fluxo fluxoObjeto = fluxo.get();
-        System.out.println(fluxoObjeto.toString());
-        return fluxo.map(c -> ResponseEntity.ok(c.getId()))
-                    .orElse(ResponseEntity.notFound().build());
+@GetMapping("/buscarPorData")
+    public ResponseEntity<List<Long>> buscarFluxosPorData(
+        @RequestParam("data") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate data) {
+        
+        // Busca os fluxos pela data e retorna apenas os IDs
+        List<Long> ids = fluxoRepository.findByData(data)
+                                        .stream()
+                                        .map(Fluxo::getId)  // Obtém o ID de cada fluxo
+                                        .collect(Collectors.toList());
+        return ResponseEntity.ok(ids);
     }
 
     
