@@ -12,4 +12,7 @@ import com.castelo.caixa.modelo.Fluxo;
 
 public interface FluxoRepository extends JpaRepository<Fluxo, Long>{
     List<Fluxo> findByData(LocalDate data);
+
+    List<Fluxo> findByDataBetweenAndOperacaoNome(Date dataInicio, Date dataFim, String operacao);
+
 }

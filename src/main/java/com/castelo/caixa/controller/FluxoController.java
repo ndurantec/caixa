@@ -3,6 +3,7 @@
 import java.net.URI;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -88,6 +89,28 @@ public class FluxoController {
         return ResponseEntity.ok(ids);
     }
 
+
+    @GetMapping("/buscarPorPeriodo")
+    public List<FluxoDto> buscarFluxosPorPeriodo(@RequestParam("dataInicio") @DateTimeFormat(pattern = "yyyy-MM-dd") Date dataInicio,
+                                                 @RequestParam("dataFim") @DateTimeFormat(pattern = "yyyy-MM-dd") Date dataFim,
+                                                 @RequestParam("operacao") String operacao) {
+        List<Fluxo> fluxos = fluxoRepository.findByDataBetweenAndOperacaoNome(dataInicio, dataFim, operacao);
+
+        // Conversão de entidades para DTOs, passando os objetos completos Conta e Operacao
+        List<FluxoDto> fluxosDto = fluxos.stream()
+            .map(fluxo -> new FluxoDto(
+                fluxo.getId(),
+                fluxo.getConta(),          // Passando o objeto Conta completo
+                fluxo.getData(),
+                fluxo.getOperacao(),       // Passando o objeto Operacao completo
+                fluxo.getValor(),
+                fluxo.getDescricao()
+            ))
+            .collect(Collectors.toList());
+
+        return fluxosDto;
+}
+    
     
     @PutMapping("/{id}")
     public ResponseEntity<Fluxo> updateFluxo(@PathVariable Long id, @RequestBody Fluxo updatedFluxo) {
