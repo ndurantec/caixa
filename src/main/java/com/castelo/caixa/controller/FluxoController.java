@@ -1,10 +1,15 @@
  package com.castelo.caixa.controller;
 
 import java.net.URI;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -14,10 +19,13 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import com.castelo.caixa.dto.ContaDto;
 import com.castelo.caixa.dto.FluxoDto;
+import com.castelo.caixa.modelo.Conta;
 import com.castelo.caixa.modelo.Fluxo;
 import com.castelo.caixa.modelo.Operacao;
 import com.castelo.caixa.repository.ContaRepository;
@@ -68,6 +76,41 @@ public class FluxoController {
                 .orElse(ResponseEntity.notFound().build());
 
     }
+
+@GetMapping("/buscarPorData")
+    public ResponseEntity<List<Long>> buscarFluxosPorData(
+        @RequestParam("data") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate data) {
+        
+        // Busca os fluxos pela data e retorna apenas os IDs
+        List<Long> ids = fluxoRepository.findByData(data)
+                                        .stream()
+                                        .map(Fluxo::getId)  // Obtém o ID de cada fluxo
+                                        .collect(Collectors.toList());
+        return ResponseEntity.ok(ids);
+    }
+
+
+    @GetMapping("/buscarPorPeriodo")
+    public List<FluxoDto> buscarFluxosPorPeriodo(@RequestParam("dataInicio") @DateTimeFormat(pattern = "yyyy-MM-dd") Date dataInicio,
+                                                 @RequestParam("dataFim") @DateTimeFormat(pattern = "yyyy-MM-dd") Date dataFim,
+                                                 @RequestParam("operacao") String operacao) {
+        List<Fluxo> fluxos = fluxoRepository.findByDataBetweenAndOperacaoNome(dataInicio, dataFim, operacao);
+
+        // Conversão de entidades para DTOs, passando os objetos completos Conta e Operacao
+        List<FluxoDto> fluxosDto = fluxos.stream()
+            .map(fluxo -> new FluxoDto(
+                fluxo.getId(),
+                fluxo.getConta(),          // Passando o objeto Conta completo
+                fluxo.getData(),
+                fluxo.getOperacao(),       // Passando o objeto Operacao completo
+                fluxo.getValor(),
+                fluxo.getDescricao()
+            ))
+            .collect(Collectors.toList());
+
+        return fluxosDto;
+}
+    
     
     @PutMapping("/{id}")
     public ResponseEntity<Fluxo> updateFluxo(@PathVariable Long id, @RequestBody Fluxo updatedFluxo) {

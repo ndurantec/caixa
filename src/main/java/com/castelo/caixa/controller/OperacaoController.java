@@ -2,6 +2,7 @@ package com.castelo.caixa.controller;
 
 import java.net.URI;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -16,7 +17,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import com.castelo.caixa.dto.ContaDto;
 import com.castelo.caixa.dto.OperacaoDto;
+import com.castelo.caixa.modelo.Conta;
 import com.castelo.caixa.modelo.Operacao;
 import com.castelo.caixa.repository.OperacaoRepository;
 
@@ -33,6 +36,15 @@ public class OperacaoController {
         return operacaoRepository.findAll();
     }  
 
+        @PostMapping("/findByNome")
+    public ResponseEntity<Long> buscarContaPorNome(@RequestBody OperacaoDto operacaoDto) {
+        Optional<Operacao> operacao = operacaoRepository.findByNome(operacaoDto.getNome());
+        Operacao operacaoObjeto = operacao.get();
+        System.out.println(operacaoObjeto.toString());
+        return operacao.map(c -> ResponseEntity.ok(c.getId()))
+                    .orElse(ResponseEntity.notFound().build());
+    }
+        
     @PostMapping (value = "/insert")
     public ResponseEntity<Operacao> insert(@RequestBody OperacaoDto operacaoDto) {
         Operacao operacao = operacaoDto.novOperacao();
