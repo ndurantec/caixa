@@ -12,4 +12,6 @@ public interface OperacaoRepository extends JpaRepository<Operacao, Long>{
     //@Transactional(readOnly = true)  
     @Query(value = "select o.id from operacao o where o.operacao = ?1", nativeQuery = true)
     Long findByIdNome(String operacao);
+
+    boolean existsByNome(String nome);
 }

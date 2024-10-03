@@ -4,6 +4,7 @@ import java.net.URI;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -37,6 +38,10 @@ public class ContaController {
 
     @PostMapping(value = "/insert")
     public ResponseEntity<Conta> insert(@RequestBody ContaDto contaDto) {
+        if(contaRepository.existsByNome(contaDto.getNome())){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                                    .body(null);
+        }else{
             Conta conta = contaDto.novoConta();
             contaRepository.save(conta);      
 
@@ -45,7 +50,7 @@ public class ContaController {
                                 .toUri();
 
             return ResponseEntity.created(uri).body(conta);
-        
+        }
     }
     
 
@@ -87,4 +92,11 @@ public class ContaController {
                 })
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
+
+    @GetMapping("/existe")
+    public ResponseEntity<Boolean> verificarNomeExite(@RequestParam String nome){
+        boolean existe = contaRepository.existsByNome(nome);
+        return ResponseEntity.ok(existe);
+    }
+
 }

@@ -12,4 +12,6 @@ public interface ContaRepository extends JpaRepository<Conta, Long>{
     //@Transactional(readOnly = true)  
     @Query(value = "select u.id from conta u where u.conta = ?1", nativeQuery = true)
     Long findByIdNome(String conta);
+
+    boolean existsByNome(String nome);
 }

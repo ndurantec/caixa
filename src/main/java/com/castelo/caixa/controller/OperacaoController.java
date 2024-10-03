@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
@@ -47,15 +49,20 @@ public class OperacaoController {
         
     @PostMapping (value = "/insert")
     public ResponseEntity<Operacao> insert(@RequestBody OperacaoDto operacaoDto) {
-        Operacao operacao = operacaoDto.novOperacao();
-        operacaoRepository.save(operacao);
-        
-        URI uri = ServletUriComponentsBuilder.fromCurrentRequest()
-                            .path("/{id}")
-                            .buildAndExpand(operacao.getId())
-                            .toUri();
+        if(operacaoRepository.existsByNome(operacaoDto.getNome())){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                                    .body(null);
+        }else{
+                Operacao operacao = operacaoDto.novOperacao();
+                operacaoRepository.save(operacao);
+                
+                URI uri = ServletUriComponentsBuilder.fromCurrentRequest()
+                                    .path("/{id}")
+                                    .buildAndExpand(operacao.getId())
+                                    .toUri();
 
-                            return ResponseEntity.created(uri).body(operacao);
+                                    return ResponseEntity.created(uri).body(operacao);
+            }
     }
     
     @GetMapping(value = "/{id}")
@@ -84,5 +91,10 @@ public class OperacaoController {
                 })
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
+
+        @GetMapping("/existe")
+            public ResponseEntity<Boolean> verificarNomeExite(@RequestParam String nome){
+                boolean existe = operacaoRepository.existsByNome(nome);
+                return ResponseEntity.ok(existe);
+            }
 }
- 
