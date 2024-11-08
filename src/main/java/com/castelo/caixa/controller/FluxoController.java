@@ -141,6 +141,16 @@ public class FluxoController {
         
     }  
 
+    @GetMapping("/somaValores")
+    public ResponseEntity<Double> calcularSaldo(){
 
+        Double totalEntradas = fluxoRepository.somaValores("Entrada");
+
+        Double totalSaidas = fluxoRepository.somaValores("Saida");
+
+        Double saldo = totalEntradas - totalSaidas;
+
+        return ResponseEntity.ok(saldo);
+    }
 
 }
