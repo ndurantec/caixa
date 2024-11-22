@@ -49,6 +49,12 @@ public class OperacaoController {
         
     @PostMapping (value = "/insert")
     public ResponseEntity<Operacao> insert(@RequestBody OperacaoDto operacaoDto) {
+
+        String regex = ".*\\d.*";
+        if (operacaoDto.getNome().matches(regex)) {
+            return ResponseEntity.badRequest().header("Error-message", "O nome da conta não pode conter numeros").build();
+        }
+
         if(operacaoRepository.existsByNome(operacaoDto.getNome())){
             return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                                     .body(null);
